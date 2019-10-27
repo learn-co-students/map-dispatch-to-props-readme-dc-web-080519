@@ -6,62 +6,62 @@
 
 ### Introduction
 
-So as you remember, `mapStateToProps()` gives us a degree of separation of
-concerns by allowing us to not reference our store in our component when
-retrieving the state. It moved us towards having our state management in one
-part of our code, and our display of our state management in a different part.
-In other words, it started the process of removing knowledge of __Redux__ inside
-our components.  
+  So as you remember, `mapStateToProps()` gives us a degree of separation of
+  concerns by allowing us to not reference our store in our component when
+  retrieving the state. It moved us towards having our state management in one
+  part of our code, and our display of our state management in a different part.
+  In other words, it started the process of removing knowledge of __Redux__ inside
+  our components.  
 
-What prevented us from fully removing a reference to __Redux__ inside our
-components was that we did not know how to dispatch actions without calling
-`store.dispatch()` from our component.  Well, in this lesson we'll learn how
-to do just that. We'll remove knowledge of the store from our components by
-using a function similar to `mapStateToProps()`, which is called
-`mapDispatchToProps()`.
+  What prevented us from fully removing a reference to __Redux__ inside our
+  components was that we did not know how to dispatch actions without calling
+  `store.dispatch()` from our component.  Well, in this lesson we'll learn how
+  to do just that. We'll remove knowledge of the store from our components by
+  using a function similar to `mapStateToProps()`, which is called
+  `mapDispatchToProps()`.
 
 ## Identifying the Problem
 
-To begin, take a look at the starting code provided in `src/App.js`:
+  To begin, take a look at the starting code provided in `src/App.js`:
 
-```js
-// ./src/App.js
-import React, { Component } from 'react';
-import './App.css';
-import { connect } from 'react-redux';
-import { addItem } from  './actions/items';
+  ```js
+  // ./src/App.js
+  import React, { Component } from 'react';
+  import './App.css';
+  import { connect } from 'react-redux';
+  import { addItem } from  './actions/items';
 
-class App extends Component {
+  class App extends Component {
 
-  handleOnClick() {
-    this.props.store.dispatch(addItem());
-  }
+    handleOnClick() {
+      this.props.store.dispatch(addItem());
+    }
 
-  render() {
-    return (
-      <div className="App">
-        <button onClick={(event) => this.handleOnClick(event)}>
-          Click
-          </button>
-        <p>{this.props.items.length}</p>
-      </div>
-    );
-  }
-};
-
-const mapStateToProps = (state) => {
-  return {
-    items: state.items
+    render() {
+      return (
+        <div className="App">
+          <button onClick={(event) => this.handleOnClick(event)}>
+            Click
+            </button>
+          <p>{this.props.items.length}</p>
+        </div>
+      );
+    }
   };
-};
 
-export default connect(mapStateToProps)(App);
-```
+  const mapStateToProps = (state) => {
+    return {
+      items: state.items
+    };
+  };
+
+  export default connect(mapStateToProps)(App);
+  ```
 
 We can see that `mapStateToProps()` is already implemented and is
 making `state.items` available to `App` as `this.props.items`. We
 also see that the button in `render()` calls `handleOnClick()` when
-clicked. The `handleOnClick()` does one thing - it dispatches an action 
+clicked. The `handleOnClick()` does one thing - it dispatches an action
 to the _store_.
 
 In the earlier `mapStateToProps()` Readme, we changed our code such that we no
@@ -165,7 +165,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 Okay, so let's see what adding our `mapDispatchToProps()` function, and passing it
 through as a second argument accomplished. We'll place in another debugger in
 our component, right at the beginning of `render()`, just before the return
-statement. 
+statement.
 
 ```js
 // src/App.js
